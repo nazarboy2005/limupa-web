@@ -3,7 +3,7 @@ from django.db import models
 class ContactModel(models.Model):
     name = models.CharField(max_length=128)
     email = models.EmailField()
-    subject = models.CharField(255)
+    subject = models.CharField(max_length=255)
     message = models.TextField()
 
     created_at = models.DateTimeField(auto_now_add=True)
