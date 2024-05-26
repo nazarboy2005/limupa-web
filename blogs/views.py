@@ -1,8 +1,7 @@
-from django.db.models import Count
-from django.db.models.functions import TruncMonth
-from django.shortcuts import render
 from django.views.generic import TemplateView, ListView
-from blogs.models import BlogModel, BlogTagModel, AuthorModel, BlogCategoryModel
+from django.views.generic import TemplateView, ListView
+
+from blogs.models import BlogModel, BlogTagModel, BlogCategoryModel
 
 
 class BlogsListView(ListView):
@@ -30,3 +29,16 @@ class BlogsListView(ListView):
 
         return context
 
+
+class BlogDetailsView(TemplateView):
+    template_name = 'blogs/blog-details.html'
+    model = BlogModel
+
+    def get_context_data(self, **kwargs):
+        context = dict()
+        context['categories'] = BlogCategoryModel.objects.all()
+        context['tags'] = BlogTagModel.objects.all()
+        context['recent_posts'] = BlogModel.objects.all().order_by('created_at')[:3]
+        context['blog'] = BlogModel.objects.get(id=self.kwargs["pk"])
+
+        return context
