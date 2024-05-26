@@ -10,7 +10,7 @@
         <div class="container">
             <div class="breadcrumb-content">
                 <ul>
-                    <li><a href="index.html">Home</a></li>
+                    <li><a href="{% url 'pages:home' %}">Home</a></li>
                     <li class="active">Blog List Left Sidebar</li>
                 </ul>
             </div>
@@ -35,12 +35,9 @@
                         <div class="li-blog-sidebar pt-25">
                             <h4 class="li-blog-sidebar-title">Categories</h4>
                             <ul class="li-blog-archive">
-                                <li><a href="#">Laptops (10)</a></li>
-                                <li><a href="#">TV & Audio (08)</a></li>
-                                <li><a href="#">reach (07)</a></li>
-                                <li><a href="#">Smartphone (14)</a></li>
-                                <li><a href="#">Cameras (10)</a></li>
-                                <li><a href="#">Headphone (06)</a></li>
+                                {% for category in categories %}
+                                <li><a href="#">{{category}} ({{category.blogs.count}})</a></li>
+                                {% endfor %}
                             </ul>
                         </div>
                         <div class="li-blog-sidebar">
@@ -56,52 +53,34 @@
                         </div>
                         <div class="li-blog-sidebar">
                             <h4 class="li-blog-sidebar-title">Recent Post</h4>
+                            {% for recent_post in recent_posts %}
+
                             <div class="li-recent-post pb-30">
                                 <div class="li-recent-post-thumb">
                                     <a href="blog-details-left-sidebar.html">
-                                        <img class="img-full" src="{% static 'images/product/small-size/3.jpg' %}"
-                                             alt="Li's Product Image">
+                                        <img class="img-full" src="{{recent_post.image.url}}"
+                                             alt="{{recent_post.title}}">
                                     </a>
                                 </div>
                                 <div class="li-recent-post-des">
-                                    <span><a href="blog-details-left-sidebar.html">First Blog Post</a></span>
-                                    <span class="li-post-date">25.11.2018</span>
+                                    <span><a href="blog-details-left-sidebar.html">{{recent_post.title}}</a></span>
+                                    <span class="li-post-date">{{recent_post.created_at|date:"d.m.Y"}}</span>
                                 </div>
                             </div>
-                            <div class="li-recent-post pb-30">
-                                <div class="li-recent-post-thumb">
-                                    <a href="blog-details-left-sidebar.html">
-                                        <img class="img-full" src="{% static 'images/product/small-size/2.jpg' %}"
-                                             alt="Li's Product Image">
-                                    </a>
-                                </div>
-                                <div class="li-recent-post-des">
-                                    <span><a href="blog-details-left-sidebar.html">First Blog Post</a></span>
-                                    <span class="li-post-date">25.11.2018</span>
-                                </div>
-                            </div>
-                            <div class="li-recent-post pb-30">
-                                <div class="li-recent-post-thumb">
-                                    <a href="blog-details-left-sidebar.html">
-                                        <img class="img-full" src="{% static 'images/product/small-size/5.jpg' %}"
-                                             alt="Li's Product Image">
-                                    </a>
-                                </div>
-                                <div class="li-recent-post-des">
-                                    <span><a href="blog-details-left-sidebar.html">First Blog Post</a></span>
-                                    <span class="li-post-date">25.11.2018</span>
-                                </div>
-                            </div>
+                            {% endfor %}
+
                         </div>
                         <div class="li-blog-sidebar">
                             <h4 class="li-blog-sidebar-title">Tags</h4>
                             <ul class="li-blog-tags">
-                                <li><a href="#">Gaming</a></li>
-                                <li><a href="#">Chromebook</a></li>
-                                <li><a href="#">Refurbished</a></li>
-                                <li><a href="#">Touchscreen</a></li>
-                                <li><a href="#">Ultrabooks</a></li>
-                                <li><a href="#">Sound Cards</a></li>
+                                {% for tag in tags %}
+                                <li><a
+                                        {% if 'blogs/details/' in request.path %}
+                                    href="blogs:list"?tag={{tag.id}}
+                                    {% else %}
+                                    style="cursor:pointer" onclick="addUrlParameter(tag, {{tag.id}})" {% endif%}>
+                                    {{tag}}</a></li>
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -346,3 +325,18 @@
     <!-- Footer Area End Here -->
 </div>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    function addUrlParameter(name, value){
+    let searchParams = new URLSearchParams(window. location.search)
+    if (searchParams.has(name) && searchParams.get(name) === value) {
+    searchParams. delete(name)
+    } else {
+    searchParams.set(name, value)
+}
+    window. location.search = searchParams.toString()
+}
+</script>
+{% endblock %}
+

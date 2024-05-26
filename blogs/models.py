@@ -58,12 +58,13 @@ class BlogTagModel(models.Model):
 
 class BlogModel(models.Model):
     title = models.TextField()
+    image = models.ImageField(upload_to='blog-photos', null=True)
     short_description = models.TextField()
     long_description = models.TextField()
     categories = models.ManyToManyField(BlogCategoryModel, related_name='blogs')
     tags = models.ManyToManyField(BlogTagModel, related_name='blogs')
     author = models.ForeignKey(AuthorModel, on_delete=models.CASCADE)
-    test_editor = RichTextUploadingField()
+    test_editor = RichTextUploadingField(null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
