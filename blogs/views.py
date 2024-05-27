@@ -8,6 +8,7 @@ class BlogsListView(ListView):
     template_name = 'blogs/blogs-list.html'
     model = BlogModel
     context_object_name = 'blogs'
+    paginate_by = 4
 
     def get_queryset(self):
         blogs = BlogModel.objects.all().order_by('created_at')
@@ -26,6 +27,7 @@ class BlogsListView(ListView):
         context['tags'] = BlogTagModel.objects.all()
         blogs_data = self.get_queryset()
         context['recent_posts'] = blogs_data[:3]
+
 
         return context
 
