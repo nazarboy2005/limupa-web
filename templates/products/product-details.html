@@ -25,38 +25,17 @@
                     <!-- Product Details Left -->
                     <div class="product-details-left">
                         <div class="product-details-images slider-navigation-1">
+                            {% for image in product.images.all %}
                             <div class="lg-image">
-                                <img src="{% static 'images/product/large-size/1.jpg' %}" alt="product image">
+                                <img src="{{image.image.url}}" alt="product image">
                             </div>
-                            <div class="lg-image">
-                                <img src="{% static 'images/product/large-size/2.jpg' %}" alt="product image">
-                            </div>
-                            <div class="lg-image">
-                                <img src="{% static 'images/product/large-size/3.jpg' %}" alt="product image">
-                            </div>
-                            <div class="lg-image">
-                                <img src="{% static 'images/product/large-size/4.jpg' %}" alt="product image">
-                            </div>
-                            <div class="lg-image">
-                                <img src="{% static 'images/product/large-size/5.jpg' %}" alt="product image">
-                            </div>
-                            <div class="lg-image">
-                                <img src="{% static 'images/product/large-size/6.jpg' %}" alt="product image">
-                            </div>
+                            {% endfor %}
                         </div>
                         <div class="product-details-thumbs slider-thumbs-1">
-                            <div class="sm-image"><img src="{% static 'images/product/small-size/1.jpg' %}"
+                            {% for image in product.images.all %}
+                            <div class="sm-image"><img src="{{image.image.url}}"
                                                        alt="product image thumb"></div>
-                            <div class="sm-image"><img src="{% static 'images/product/small-size/2.jpg' %}"
-                                                       alt="product image thumb"></div>
-                            <div class="sm-image"><img src="{% static 'images/product/small-size/3.jpg' %}"
-                                                       alt="product image thumb"></div>
-                            <div class="sm-image"><img src="{% static 'images/product/small-size/4.jpg' %}"
-                                                       alt="product image thumb"></div>
-                            <div class="sm-image"><img src="{% static 'images/product/small-size/5.jpg' %}"
-                                                       alt="product image thumb"></div>
-                            <div class="sm-image"><img src="{% static 'images/product/small-size/6.jpg' %}"
-                                                       alt="product image thumb"></div>
+                            {% endfor %}
                         </div>
                     </div>
                     <!--// Product Details Left -->
@@ -88,7 +67,7 @@
                             </div>
                             <div class="product-desc">
                                 <p>
-                                            <span>{{product.long_description}}
+                                            <span>{{product.short_description}}
                                             </span>
                                 </p>
                             </div>

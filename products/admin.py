@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from products.models import ProductCategoryModel, ProductTagModel, ProductSizeModel, ProductModel, ProductColorModel, \
-    ProductManufacturerModel
+    ProductManufacturerModel, ProductImagesModel
 
 
 @admin.register(ProductCategoryModel)
@@ -44,9 +44,14 @@ class ProductColorModelAdmin(admin.ModelAdmin):
     list_filter = ['name_or_code', 'created_at']
 
 
+class ProductImagesModelAdmin(admin.StackedInline):
+    model = ProductImagesModel
+
+
 @admin.register(ProductModel)
 class ProductModelAdmin(admin.ModelAdmin):
     list_display = ['name', 'price', 'created_at']
     search_fields = ['name', 'price', 'created_at']
     list_filter = ['name', 'price', 'created_at']
+    inlines = [ProductImagesModelAdmin]
 

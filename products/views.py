@@ -27,10 +27,20 @@ class ProductsListView(ListView):
         return context
 
 
-class ProductsDetailsView(ListView):
+class ProductsDetailsView(TemplateView):
     template_name = 'products/product-details.html'
-    context_object_name = 'product'
+    model = ProductModel
 
-    def get_queryset(self):
-        product = ProductModel.objects.get(id=self.kwargs["pk"])
-        return product
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        product = ProductModel.objects.get(id=kwargs["pk"])
+        product_categories = product.categories.all()
+        same_cat_products = ProductModel.objects.filter(categories__in=product_categories).exclude(
+            id=product.id).distinct()
+
+        context.update({
+            'product': product,
+            'same_cat_products': same_cat_products[:15],
+        })
+
+        return context
